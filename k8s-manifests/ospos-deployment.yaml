@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file docker-compose.dev.yml convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: ospos
+  name: ospos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: ospos
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file docker-compose.dev.yml convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/app_net: "true"
+        io.kompose.network/db_net: "true"
+        io.kompose.service: ospos
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_DB_NAME
+              value: ospos
+            - name: MYSQL_HOST_NAME
+              value: mysql
+            - name: MYSQL_PASSWORD
+              value: pointofsale
+            - name: MYSQL_USERNAME
+              value: admin
+            - name: PHP_TIMEZONE
+              value: UTC
+            - name: XDEBUG_CONFIG
+              value: remote_host=172.17.0.1
+          image: ospos
+          name: ospos-dev
+          ports:
+            - containerPort: 80
+          resources: {}
+          volumeMounts:
+            - mountPath: /app
+              name: ospos-claim0
+            - mountPath: /app/public/uploads
+              name: uploads
+            - mountPath: /app/application/logs
+              name: logs
+      restartPolicy: Always
+      volumes:
+        - name: ospos-claim0
+          persistentVolumeClaim:
+            claimName: ospos-claim0
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: uploads
+        - name: logs
+          persistentVolumeClaim:
+            claimName: logs
+status: {}

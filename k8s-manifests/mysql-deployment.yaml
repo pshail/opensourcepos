@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file docker-compose.dev.yml convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mysql
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file docker-compose.dev.yml convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/db_net: "true"
+        io.kompose.service: mysql
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_DATABASE
+              value: ospos
+            - name: MYSQL_PASSWORD
+              value: pointofsale
+            - name: MYSQL_ROOT_PASSWORD
+              value: pointofsale
+            - name: MYSQL_USER
+              value: admin
+          image: mariadb:10.5
+          name: mysql
+          ports:
+            - containerPort: 3306
+          resources: {}
+          volumeMounts:
+            - mountPath: /docker-entrypoint-initdb.d/database.sql
+              name: mysql-claim0
+            - mountPath: /var/lib/mysql
+              name: mysql
+      restartPolicy: Always
+      volumes:
+        - name: mysql-claim0
+          persistentVolumeClaim:
+            claimName: mysql-claim0
+        - name: mysql
+          persistentVolumeClaim:
+            claimName: mysql
+status: {}
