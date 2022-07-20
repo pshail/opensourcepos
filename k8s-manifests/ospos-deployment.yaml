@@ -40,7 +40,7 @@ spec:
               value: UTC
             - name: XDEBUG_CONFIG
               value: remote_host=172.17.0.1
-          image: ospos
+          image: jekkos/opensourcepos:master
           name: ospos-dev
           ports:
             - containerPort: 80
