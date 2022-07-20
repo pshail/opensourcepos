@@ -22,7 +22,7 @@ spec:
         kompose.version: 1.26.0 (40646f47)
       creationTimestamp: null
       labels:
-        io.kompose.network/db_net: "true"
+        io.kompose.network/db-net: "true"
         io.kompose.service: mysql
     spec:
       containers:

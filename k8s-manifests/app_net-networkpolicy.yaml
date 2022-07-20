@@ -2,13 +2,13 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   creationTimestamp: null
-  name: app_net
+  name: app-net
 spec:
   ingress:
     - from:
         - podSelector:
             matchLabels:
-              io.kompose.network/app_net: "true"
+              io.kompose.network/app-net: "true"
   podSelector:
     matchLabels:
-      io.kompose.network/app_net: "true"
+      io.kompose.network/app-net: "true"
