@@ -3,9 +3,10 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: mysql-claim0
-  name: mysql-claim0
+    io.kompose.service: ospos-claim0
+  name: ospos-claim0
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:

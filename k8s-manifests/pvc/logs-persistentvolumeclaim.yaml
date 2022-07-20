@@ -6,6 +6,7 @@ metadata:
     io.kompose.service: logs
   name: logs
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
